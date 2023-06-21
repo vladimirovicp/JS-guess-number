@@ -8,11 +8,13 @@ const userInput = document.querySelector('.guess-field');
 const guessSlot = document.querySelector('.guesses');
 const remaining = document.querySelector('.last-result');
 const totalLevels = document.querySelector('.total-lives'); // количство попыток
-const startOver = document.querySelector('.guess-field');
+const startOver = document.querySelector('.result');
 const hint = document.querySelector('.hint');
 
 const minNumber = document.querySelector('.min-number');
 const maxNumber = document.querySelector('.max-number');
+
+const createNewGameButton = document.createElement("button");
 
 const MIN_NUMBER = 1;
 const MAX_NUMBER = 100;
@@ -57,6 +59,7 @@ function checkGuess(guess){
     addGuesses(guess);
     if(guess === randomNumber){
         displayMessage('Ура ты победил!');
+        endGame();
     } else if( guess !== randomNumber && previousGuesses.length === MAX_ATTEMPTS){
         displayMessage('Ты проиграл!');
     } else if( guess < randomNumber){
@@ -86,4 +89,25 @@ function endGame(){
     createNewGameButton.textContent = "Начать снова";
     startOver.append(createNewGameButton);
     playGame = false;
+    preload();
+}
+
+function preload(){
+    const preload = document.querySelector('.new-game-btn');
+
+    preload.addEventListener('click',
+        ()=>{
+            playGame = true;
+            userInput.removeAttribute("disabled");
+            submit.removeAttribute("disabled");
+            previousGuesses = [];
+            randomNumber = getRandomNumber(MIN_NUMBER,MAX_NUMBER);
+
+            console.log(randomNumber);
+
+            remaining.textContent = MAX_ATTEMPTS;
+            totalLevels.textContent = MAX_ATTEMPTS;
+            createNewGameButton.remove();
+
+        })
 }
